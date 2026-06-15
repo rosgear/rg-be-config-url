@@ -1,0 +1,45 @@
+/*!
+ * Форма (Form).
+ *
+ * Расширение "Маршрутизация".
+ * Модуль "Конфигурация".
+ *
+ * Copyright 2015 RosGear
+ * Copyright Anton Tivonenko <anton.tivonenko@gmail.com>
+ * https://rosgear.ru/license/
+ */
+
+/**
+ * Правила маршрутизации.
+ */
+.rg-config-url__rule {
+    font-size: 14px;
+    color: #7c7c7c;
+    margin-bottom: 3px; }
+
+    .rg-config-url__rule span {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #7c7c7c;
+        color: #fff;
+        text-align: center;
+        font-size: 13px;
+        line-height: 15px;
+        margin-right: 5px; }
+
+    .rg-config-url__rule em {
+        display: inline-block;
+        text-align: right;
+        width: 64px;
+        font-style: normal;
+        font-size: 13px;
+        color: #4d82b8;
+        margin-right: 5px; }
+
+.rg-config-url__rule--active .rg-config-url__rule { 
+    color: #217346; }
+
+    .rg-config-url__rule--active .rg-config-url__rule span { 
+        background-color: #90B9A3; }
