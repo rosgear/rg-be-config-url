@@ -19,30 +19,129 @@
         <li>start, item "Configuration".</li>
     </ul>
     <h2>Form fields</h2>
+    <h3>Common rules for constructing a URL</h3>
+    <p>To generate the URL, the following fields must be filled in.:</p>    
     <ul class="g-help-list">
-        <li><b>Reset settings.</b> Resets all settings to default values (only after pressing the "Save" button).</li>
+        <li><span class="g-help-fld g-help-fld_checkbox"></span> <b>Friendly URLs.</b> If this option is enabled, a "friendly URL" will be generated.<br>
+            "Friendly URLs (human-readable URLs) are page addresses generated using meaningful identifiers (such as the names of sections, articles, products, etc.) rather than technical parameters. They improve navigation and user perception of the link, and also support SEO efforts thanks to a clear path structure.<br>
+            To generate a friendly URL, the system uses either the route to the web application component (module or module extension) or a user-specified URL path. Based on the selection, a sequence of path segments is formed—for example, in the format `/category/subcategory/slug`.</li>
+        <li><span class="g-help-fld g-help-fld_checkbox"></span> <<b>Trailing slash.</b> If this option is enabled, a trailing slash (/) is added to the end of the generated URL.<br>This behavior is deterministic: the operation is performed only when the option is active and only for non-empty URLs.<br>
+            Application rules:
+            <ul>
+                <li>If the URL already ends with a /, it is not inserted again (preventing duplication).</li>
+                <li>The flag does not affect the query parameters (query string) and fragment: the slash is added strictly before them (for example, /path/ → /path/?param=value).</li>
+            </ul>
+            Transformation example: Original path: /catalog/kitchen → with the flag enabled: /catalog/kitchen/.
+        </li>
+        <li><span class="g-help-fld g-help-fld_checkbox"></span> <b>Script name (index.php) in the URL.</b> When this flag is set, the script name `index.php` is included in the URL. This allows  the system to correctly process requests in environments where the executable file must be explicitly specified.<br>
+            Examples:<br>
+            <ul>
+                <li>Without a flag: https://example.com/catalog/shoes;</li>
+                <li>With the flag: https://example.com/index.php/catalog/shoes.</li>
+            </ul>
+        </li>
+        <li><span class="g-help-fld g-help-fld_text"></span> <b>URL query parameter.</b> Specify the name of the parameter used to pass the route to the component (module or module extension) or a custom URL path via the URL.<br>This parameter applies only when the "SEF URLs" (Search Engine Friendly URLs) option is disabled: in this mode, the system uses the specified parameter to explicitly pass the path instead of generating a human-readable URL.<br>
+            Example:<br>
+            <ul>    
+                <li>The "friendly URL" flag is disabled, the parameter is set as "r";</li>
+                <li>URL: https://example.com/?r=catalog/kitchen.</li>
+            </ul>
+        </li>
     </ul>
 
-    <h3>General rules for generating a URL</h3>
-    <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua and has the following fields:</p>    
+    <h3>Rules for formation of permalinks for materials (articles) and categories</h3>
+    <p>The following rules apply to the generation of permanent links (URLs):</p>
     <ul class="g-help-list">
-        <li><b>Friendly URL to get pretty URLs.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Slash at the end of the URL.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Script name (index.php) to URL.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>URL query parameter.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.</li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Simple ones.</b><br>
+            In the URL, the material and category ID is passed through a parameter.
+            <ul>
+                <li><u>For the article:</u> parameter "a", where a=123 is the article identifier.<br>
+                Example: https://example.com/?a=123.</li>
+                <li><u>For the category:</u> parameter "c", where c=45 is the category identifier.<br>
+                Example: https://example.com/?c=45.</li>
+            </ul>
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Date (month) with article name.</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the year and month of publication, as well as the title of the material. The segments are arranged in the following order: /&lt;year&gt;/&lt;month&gt;/&lt;slug&gt;<br>
+                Example: https://example.com/2024/05/obzor-novogo-smartfona</li>
+                <li><u>For the category:</u> only the category name, transformed according to established normalization rules, is inserted into the URL path.<br>
+                Example: https://example.com/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Date and title of the article.</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the publication date and the title of the material. The segments are arranged in the following order: /&lt;year&gt;/&lt;month&gt;/&lt;day&gt;/&lt;slug&gt;<br>
+                Example: https://example.com/2024/05/01/obzor-novogo-smartfona</li>
+                <li><u>For the category:</u> only the category name, transformed according to established normalization rules, is inserted into the URL path.<br>
+                Example: https://example.com/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Article identifier with an index.</b><br>
+            In the URL, the URL path structure is formed differently for content items and categories.:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the `article` segment as well as the content identifier. The segments are arranged in the order: /&lt;article&gt;/&lt;id&gt;<br>
+                Example: https://example.com/article/123</li>
+                <li><u>For the category:</u> The URL path includes the `category` segment as well as the category identifier. The segments are arranged in the order: /&lt;category&gt;/&lt;id&gt;<br>
+                Example: https://example.com/category/45</li>
+            </ul>
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Name of the article with an segment.</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories.:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the `article` segment as well as the name of the article. The segments are arranged in the following order: /&lt;article&gt;/&lt;slug&gt;<br>
+                Example: https://example.com/article/obzor-novogo-smartfona</li>
+                <li><u>For the category:</u>The URL path includes the `category` segment as well as the category name. The segments are arranged in the order: /&lt;category&gt;/&lt;slug&gt;<br>
+                Example: https://example.com/category/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Article name (.html) with segment.</b><br>
+            The URL is generated differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the `article` segment and the title of the material, with the `.html` file extension explicitly specified at the end. The segments are arranged in the following order: /&lt;article&gt;/&lt;slug&gt;.html<br>
+                Example: https://example.com/article/obzor-novogo-smartfona.html</li>
+                <li><u>For the category:</u> The URL path includes the `category` segment as well as the category name. The segments are arranged in the following order: /&lt;category&gt;/&lt;slug&gt;<br>
+                Example: https://example.com/category/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Category and article name.</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the category and material names. The segments are arranged in the order: /&lt;slug-category&gt;/&lt;slug-article&gt;<br>
+                Example: https://example.com/smartfony/obzor-novogo-smartfona</li>
+                <li><u>For the category:</u> The URL path includes the category name. The segments are arranged in the order: /&lt;slug-category&gt;<br>
+                Example: https://example.com/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Category and article name (.html).</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the category and material names, with the .html file extension explicitly specified at the end. The segments are arranged in the following order: /&lt;slug-category&gt;/&lt;slug-article&gt;.html<br>
+                Example: https://example.com/smartfony/obzor-novogo-smartfona.html</li>
+                <li><u>For the category:</u> The URL path includes the category name. The segments are arranged in the order: /&lt;slug-category&gt;<br>
+                Example: https://example.com/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
+        <li><span class="g-help-fld g-help-fld_radio"></span> <b>Article name (.html).</b><br>
+            In the URL, the URL path structure is formed differently for articles and categories:<br>
+            <ul>
+                <li><u>For the article:</u> The URL path includes the name of the article, with the .html file extension explicitly specified at the end. The segments are arranged in the following order: /&lt;slug-article&gt;.html<br>
+                Example: https://example.com/obzor-novogo-smartfona.html</li>
+                <li><u>For the category:</u> The URL path includes the category name. The segments are arranged in the order: /&lt;slug-category&gt;<br>
+                Example: https://example.com/smartfony</li>
+            </ul>
+            Article and category names are normalized according to established rules when generating URL paths. This ensures a consistent and readable address format, as well as correct system handling of special characters.
+        </li>
     </ul>
-
-    <h3>Rules for generating permalinks for categories and articles</h3>
-    <p>Rules are applied to the formation of links on the pages of the site:</p>
     <ul class="g-help-list">
-        <li><b>Simple.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Date (month) with article title.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Date with article title.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Article ID with pointer.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Article title with pointer.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Article title (.html) with pointer.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Category and article title.</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Category and article title (.html).</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat;</li>
-        <li><b>Article title (.html).</b> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat.</li>
+        <li><span class="g-help-fld g-help-fld_checkbox"></span> <b>Reset settings.</b> Resets all settings to their default values (only after clicking the "Save" button).</li>
     </ul>
 </article>
